@@ -1,0 +1,219 @@
+@import 'tailwindcss';
+
+@source '../views/**/*.blade.php';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --color-ink: #14211e;
+    --color-mint: #7ee2b8;
+    --color-paper: #f5f7f3;
+    --color-line: #dce4df;
+}
+
+@layer base {
+    html { @apply bg-paper; }
+    body { font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11'; text-rendering: optimizeLegibility; }
+    ::selection { @apply bg-mint text-ink; }
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+@layer components {
+    .app-shell { @apply min-h-screen bg-paper text-ink; }
+    .login-gym-bg { @apply relative overflow-x-hidden bg-[#e9f0ec]; background-image: url('/images/gym-equipment-background.png'); background-position: center; background-repeat: no-repeat; background-size: cover; background-attachment: fixed; }
+    .login-gym-bg::before { content: ''; @apply pointer-events-none fixed inset-0 z-0 bg-[#e9f0ec]/75; }
+    .login-gym-bg .guest-shell { @apply relative z-10; background-color: transparent; }
+    .app-sidebar { @apply fixed inset-y-0 left-0 z-30 flex w-72 -translate-x-full flex-col bg-ink px-5 py-5 text-white transition-transform lg:translate-x-0; }
+    .app-sidebar.is-open { @apply translate-x-0; }
+    .app-main { @apply min-h-screen lg:pl-72; }
+    .app-topbar { @apply sticky top-0 z-20 flex h-20 items-center justify-between border-b border-line bg-paper/95 px-4 backdrop-blur sm:px-8; }
+    .nav-item { @apply flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-white/65 transition hover:bg-white/10 hover:text-white; }
+    .nav-item-active { @apply bg-mint font-semibold text-ink shadow-sm hover:bg-mint hover:text-ink; }
+    .surface { @apply rounded-2xl border border-line bg-white shadow-[0_10px_30px_rgba(20,33,30,0.04)]; }
+    .eyebrow { @apply text-xs font-semibold uppercase text-emerald-700; letter-spacing: 0.08em; }
+    .btn-primary { @apply inline-flex items-center justify-center rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-900; }
+    .btn-secondary { @apply inline-flex items-center justify-center rounded-xl border border-line bg-white px-4 py-2.5 text-sm font-semibold text-ink transition hover:border-emerald-400 hover:bg-emerald-50; }
+    .field { @apply mt-1 w-full rounded-xl border-line bg-paper px-3 py-2.5 text-sm text-ink outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100; }
+    .btn-danger { @apply inline-flex items-center justify-center rounded-xl border border-rose-200 bg-rose-50 px-4 py-2.5 text-sm font-semibold text-rose-700 transition hover:bg-rose-100; }
+    .status-pill { @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold; }
+    .status-pill::before { content: ''; @apply size-1.5 rounded-full bg-current; }
+    .modal-backdrop { @apply fixed inset-0 z-50 grid place-items-center bg-ink/40 p-4 backdrop-blur-sm; }
+    .modal-panel { @apply w-full max-w-lg rounded-2xl border border-line bg-white p-6 shadow-2xl; }
+    .guest-shell { @apply min-h-screen bg-paper text-ink; }
+    .login-page { @apply w-full; }
+    .login-hero { @apply relative min-h-[680px] overflow-hidden rounded-3xl bg-ink px-6 py-6 shadow-[0_24px_70px_rgba(20,33,30,0.18)] sm:px-10 sm:py-8; }
+    .login-hero-top, .login-hero-copy, .login-hero-footer { @apply relative z-20; }
+    .login-hero-top { @apply flex items-center justify-between gap-4; }
+    .login-live-pill { @apply inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.12em] text-white/70; }
+    .login-live-pill i { @apply size-1.5 rounded-full bg-mint; box-shadow: 0 0 0 4px rgba(126, 226, 184, 0.12); }
+    .login-hero-copy { @apply mt-16 sm:mt-20; }
+    .login-visual-stage { @apply absolute inset-x-0 bottom-12 h-[340px] overflow-hidden bg-[#193129] sm:h-[390px]; }
+    .login-visual-stage::before { content: ''; @apply absolute inset-x-8 bottom-8 z-10 h-px bg-white/20; }
+    .login-visual-stage::after { content: ''; @apply absolute inset-x-0 bottom-0 z-10 h-12 border-t border-white/10 bg-ink/35; }
+    .login-stage-grid { @apply absolute inset-0 opacity-30; background-size: 44px 44px; background-image: linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px); }
+    .login-stage-kicker { @apply absolute bottom-4 left-6 z-20 text-[10px] font-bold tracking-[0.18em] text-mint/70; }
+    .login-exercise-frame { @apply absolute inset-x-0 bottom-8 z-0 mx-auto h-[350px] w-full max-w-4xl overflow-hidden sm:h-[410px]; }
+    .login-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: login-exercise-film 16s ease-in-out infinite; }
+    .login-exercise-frame img:nth-child(2) { animation-delay: 3.2s; }
+    .login-exercise-frame img:nth-child(3) { animation-delay: 6.4s; }
+    .login-exercise-frame img:nth-child(4) { animation-delay: 9.6s; }
+    .login-exercise-frame img:nth-child(5) { animation-delay: 12.8s; }
+    .login-exercise-labels { @apply absolute bottom-16 right-6 z-20 text-right text-xs font-semibold text-white/80; }
+    .login-exercise-labels span { @apply block; opacity: 0; animation: login-label-film 16s ease-in-out infinite; }
+    .login-exercise-labels span:nth-child(2) { animation-delay: 3.2s; }
+    .login-exercise-labels span:nth-child(3) { animation-delay: 6.4s; }
+    .login-exercise-labels span:nth-child(4) { animation-delay: 9.6s; }
+    .login-exercise-labels span:nth-child(5) { animation-delay: 12.8s; }
+    .login-hero-footer { @apply absolute inset-x-6 bottom-6 flex items-center gap-4 text-xs font-semibold text-white/45 sm:inset-x-10 sm:bottom-8 sm:gap-6; }
+    .login-hero-footer span:not(:last-child)::after { content: ''; @apply ml-4 inline-block size-1 rounded-full bg-mint/60 align-middle sm:ml-6; }
+    .metric-card { @apply relative overflow-hidden rounded-2xl border border-line bg-white p-5 shadow-[0_10px_30px_rgba(20,33,30,0.04)]; }
+    .metric-card::after { content: ''; @apply absolute right-0 top-0 h-full w-1 bg-mint; }
+    .gym-mark { @apply grid size-14 shrink-0 place-items-center overflow-hidden rounded-2xl bg-mint text-ink shadow-[0_8px_20px_rgba(126,226,184,0.18)]; }
+    .motion-gym .gym-mark img { animation: gym-lift 2.4s ease-in-out 2; transform-origin: center; }
+    .section-icon { @apply grid size-10 place-items-center rounded-xl bg-emerald-50 text-emerald-800; }
+    .motion-gym .section-icon:hover svg { animation: gym-lift 1.2s ease-in-out; }
+    .data-panel { @apply overflow-hidden rounded-2xl border border-line bg-white shadow-[0_14px_34px_rgba(20,33,30,0.05)]; }
+    .gym-motion-panel { @apply relative overflow-hidden p-6 sm:p-8; }
+    .gym-motion-copy { @apply relative z-10 max-w-sm; }
+    .gym-motion-legend { @apply mt-5 flex gap-4 text-xs font-semibold text-zinc-500; }
+    .gym-dot { @apply mr-1.5 inline-block size-2 rounded-full; }
+    .gym-dot-mint { @apply bg-emerald-500; }
+    .gym-dot-blue { @apply bg-sky-600; }
+    .gym-stage { @apply relative mt-5 min-h-80 overflow-hidden rounded-2xl bg-[#eef5f1] sm:min-h-96; }
+    .gym-stage::before { content: ''; @apply pointer-events-none absolute inset-0 z-10; background: linear-gradient(90deg, rgba(238,245,241,0.72), transparent 20%, transparent 80%, rgba(238,245,241,0.72)); }
+    .gym-figure { @apply absolute inset-x-0 bottom-2 mx-auto h-full w-full max-w-xl text-ink; }
+    .gym-floor { @apply absolute inset-x-8 bottom-5 h-px bg-[#c6d9ce]; }
+    .gym-stage-label { @apply absolute bottom-2 left-4 text-[10px] font-bold tracking-[0.16em] text-emerald-800/60; }
+    .human-exercise-frame { @apply absolute inset-x-0 bottom-5 mx-auto h-80 w-full max-w-5xl overflow-hidden sm:h-[26rem]; }
+    .human-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: human-exercise-cycle 16s ease-in-out infinite; }
+    .human-exercise-frame img:nth-child(2) { animation-delay: 3.2s; }
+    .human-exercise-frame img:nth-child(3) { animation-delay: 6.4s; }
+    .human-exercise-frame img:nth-child(4) { animation-delay: 9.6s; }
+    .human-exercise-frame img:nth-child(5) { animation-delay: 12.8s; }
+    .gym-exercise-caption { @apply absolute bottom-8 right-4 z-10 text-right text-xs font-bold text-emerald-900; }
+    .gym-exercise-caption span { position: absolute; right: 0; width: 10rem; opacity: 0; animation: exercise-caption-cycle 16s ease-in-out infinite; }
+    .gym-exercise-caption span:nth-child(2) { animation-delay: 3.2s; }
+    .gym-exercise-caption span:nth-child(3) { animation-delay: 6.4s; }
+    .gym-exercise-caption span:nth-child(4) { animation-delay: 9.6s; }
+    .gym-exercise-caption span:nth-child(5) { animation-delay: 12.8s; }
+}
+
+@keyframes gym-lift {
+    0%, 15%, 100% { transform: translateY(2px) rotate(-8deg); }
+    45%, 60% { transform: translateY(-4px) rotate(8deg); }
+    80% { transform: translateY(1px) rotate(-5deg); }
+}
+@keyframes gym-arrive {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes login-exercise-film {
+    0%, 5% { opacity: 0; transform: translate3d(1.5%, 8px, 0) scale(1.06); }
+    11%, 22% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    28% { opacity: 1; transform: translate3d(-1%, -3px, 0) scale(1.035); }
+    36%, 100% { opacity: 0; transform: translate3d(-2%, -6px, 0) scale(1.065); }
+}
+@keyframes login-label-film {
+    0%, 5% { opacity: 0; transform: translateY(6px); }
+    11%, 28% { opacity: 1; transform: translateY(0); }
+    36%, 100% { opacity: 0; transform: translateY(-5px); }
+}
+
+/* A compact barbell occupies a reserved corner, clear of metric values. */
+.motion-gym .metric-card { padding-right: 4.5rem; }
+.motion-gym .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    width: 2rem;
+    height: 1.5rem;
+    color: #527c70;
+    background:
+        linear-gradient(currentColor, currentColor) 0 50% / 3px 10px,
+        linear-gradient(currentColor, currentColor) 5px 50% / 5px 22px,
+        linear-gradient(currentColor, currentColor) 50% 50% / 18px 4px,
+        linear-gradient(currentColor, currentColor) 22px 50% / 5px 22px,
+        linear-gradient(currentColor, currentColor) 100% 50% / 3px 10px;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    animation: gym-lift 2.2s ease-in-out 2;
+}
+.motion-gym .metric-card:nth-child(2n)::before { color: #a26b24; animation-delay: 120ms; }
+.motion-gym .metric-card:nth-child(3n)::before { color: #477b9d; animation-delay: 240ms; }
+.motion-gym .app-main > main { animation: gym-arrive 350ms ease-out; }
+.motion-gym .gym-motion-panel { animation: gym-arrive 500ms ease-out 120ms both; }
+.motion-gym .exercise { opacity: 0; transform-box: fill-box; transform-origin: center; animation: exercise-cycle 16s ease-in-out infinite; }
+.motion-gym .exercise-pushups { animation-delay: 0s; }
+.motion-gym .exercise-stand { animation-delay: 3.2s; }
+.motion-gym .exercise-run { animation-delay: 6.4s; }
+.motion-gym .exercise-press { animation-delay: 9.6s; }
+.motion-gym .exercise-curl { animation-delay: 12.8s; }
+.motion-gym .human-exercise-frame { animation-play-state: running; }
+
+@keyframes exercise-cycle {
+    0%, 2% { opacity: 0; transform: translateY(5px) scale(0.98); }
+    8%, 17% { opacity: 1; transform: translateY(0) scale(1); }
+    20%, 100% { opacity: 0; transform: translateY(-3px) scale(1.01); }
+}
+
+@keyframes human-exercise-cycle {
+    0%, 5% { opacity: 0; transform: translate3d(1.5%, 4px, 0) scale(1.045); }
+    11%, 22% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    28% { opacity: 1; transform: translate3d(-1%, -2px, 0) scale(1.025); }
+    36%, 100% { opacity: 0; transform: translate3d(-1.8%, -3px, 0) scale(1.04); }
+}
+@keyframes exercise-caption-cycle {
+    0%, 5% { opacity: 0; transform: translateY(5px); }
+    11%, 22% { opacity: 1; transform: translateY(0); }
+    28% { opacity: 1; transform: translateY(-2px); }
+    36%, 100% { opacity: 0; transform: translateY(-5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+        .motion-gym .gym-mark img { animation: none; opacity: 1; }
+        .motion-gym .section-icon:hover svg, .motion-gym .metric-card::before, .motion-gym .app-main > main, .motion-gym .human-exercise-frame img, .motion-gym .gym-exercise-caption span { animation: none; opacity: 0; }
+        .motion-gym .human-exercise-frame img:first-child { opacity: 1; }
+        .login-exercise-frame img, .login-exercise-labels span { animation: none; opacity: 0; }
+        .login-exercise-frame img:first-child, .login-exercise-labels span:first-child { opacity: 1; }
+}
+
+@layer utilities {
+    main h1 { letter-spacing: 0; line-height: 1.15; }
+    main h1::before { content: ''; display: inline-block; width: 0.35rem; height: 1.1em; margin-right: 0.65rem; border-radius: 999px; background: var(--color-mint); vertical-align: -0.12em; }
+    main > div > div:first-child { border-bottom: 1px solid rgba(220, 228, 223, 0.75); padding-bottom: 1.25rem; }
+    main > div > div:first-child h1 { font-weight: 650; }
+    main input:not([type='hidden']):not([type='checkbox']):not([type='radio']), main select, main textarea { border-radius: 0.75rem; border-color: var(--color-line); background-color: #fbfcfa; color: var(--color-ink); transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease; }
+    main input:not([type='hidden']):not([type='checkbox']):not([type='radio']):hover, main select:hover, main textarea:hover { border-color: #b5c9bf; background-color: white; }
+    main input:not([type='hidden']):not([type='checkbox']):not([type='radio']):focus, main select:focus, main textarea:focus { border-color: #34a873; box-shadow: 0 0 0 4px rgba(52, 168, 115, 0.12); outline: none; }
+    main input::placeholder, main textarea::placeholder { color: #96a49e; }
+    main table { border-collapse: separate; border-spacing: 0; }
+    main table thead { background: #f4f7f3; }
+    main table thead th { color: #687871; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; white-space: nowrap; }
+    main table tbody td { color: #263630; vertical-align: middle; }
+    main table tbody tr { transition: background-color 150ms ease; }
+    main table tbody tr:hover { background: #f8fbf8; }
+    main button[type='submit'], main form button:not([aria-label]) { border-radius: 0.75rem; font-weight: 650; transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease; }
+    main button[type='submit']:hover, main form button:not([aria-label]):hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(20, 33, 30, 0.12); }
+    main .rounded.border.border-zinc-200.bg-white { border-color: var(--color-line); border-radius: 1rem; box-shadow: 0 10px 30px rgba(20, 33, 30, 0.04); }
+    main a.rounded.border.border-zinc-200.bg-white { display: block; transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease; }
+    main a.rounded.border.border-zinc-200.bg-white:hover { transform: translateY(-2px); border-color: #8fd5b3; box-shadow: 0 14px 28px rgba(20, 33, 30, 0.08); }
+    main form { accent-color: #168b5b; }
+    main form label { color: #33443d; }
+    main form label > input, main form label > select, main form label > textarea { margin-top: 0.45rem; }
+    main form button, main a[class*='bg-emerald-700'] { min-height: 2.65rem; }
+    main .overflow-x-auto { scrollbar-color: #b9cbc1 transparent; scrollbar-width: thin; }
+    main nav[role='navigation'] > div:first-child { color: #788780; font-size: 0.75rem; }
+    main a[class*='bg-emerald-700'] { border-radius: 0.75rem; font-weight: 650; transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease; }
+    main a[class*='bg-emerald-700']:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(20, 33, 30, 0.12); }
+    main nav[role='navigation'] { display: flex; align-items: center; justify-content: center; gap: 0.35rem; }
+    main nav[role='navigation'] a, main nav[role='navigation'] span { border-radius: 0.65rem; font-size: 0.75rem; font-weight: 600; }
+    main nav[role='navigation'] a { border: 1px solid var(--color-line); background: white; color: var(--color-ink); transition: border-color 150ms ease, background-color 150ms ease; }
+    main nav[role='navigation'] a:hover { border-color: #34a873; background: #ecfdf5; }
+    main nav[role='navigation'] span[aria-current='page'] > span { border-radius: 0.65rem; background: var(--color-ink); color: white; }
+}
