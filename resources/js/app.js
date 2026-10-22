@@ -1,6 +1,8 @@
 import Alpine from 'alpinejs';
+import trainingVideo from './training-video';
 
 window.Alpine = Alpine;
+Alpine.data('trainingVideo', trainingVideo);
 
 window.photoUploader = () => ({
     fileName: '',

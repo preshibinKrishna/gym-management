@@ -26,20 +26,8 @@
             </div>
 
             <div class="relative min-w-0">
-                <div class="gym-stage mt-0 min-h-[300px] rounded-2xl sm:min-h-[370px]">
-                    <span class="absolute left-4 top-4 z-20 rounded-full border border-white/15 bg-ink/75 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-mint">The training floor</span>
-                    <div class="gym-floor"></div>
-                    <div class="human-exercise-frame" role="img" aria-label="Two athletes moving through a sequence of gym exercises">
-                        <img src="{{ asset('images/gym-duo-exercise-pushup.png') }}" alt="" aria-hidden="true">
-                        <img src="{{ asset('images/gym-duo-exercise-standing.png') }}" alt="" aria-hidden="true">
-                        <img src="{{ asset('images/gym-duo-exercise-running.png') }}" alt="" aria-hidden="true">
-                        <img src="{{ asset('images/gym-duo-exercise-chest-press.png') }}" alt="" aria-hidden="true">
-                        <img src="{{ asset('images/gym-duo-exercise-dumbbell-curl.png') }}" alt="" aria-hidden="true">
-                    </div>
-                    <div class="gym-exercise-caption" aria-hidden="true"><span>Strength together</span><span>Reset and refocus</span><span>Cardio in motion</span><span>Build power</span><span>Finish strong</span></div>
-                    <span class="gym-stage-label">FIVE MOVEMENTS · ONE TEAM</span>
-                </div>
-                <div class="pointer-events-none absolute -bottom-4 -left-2 z-20 rounded-xl border border-white/15 bg-ink/90 px-4 py-3 shadow-xl sm:-left-5">
+                <x-training-video />
+                <div class="mt-4 rounded-xl border border-white/15 bg-white/5 px-4 py-3">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-mint">Made for movement</p>
                     <p class="mt-1 text-sm font-semibold text-white">People first. Progress every day.</p>
                 </div>
