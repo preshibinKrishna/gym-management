@@ -1,0 +1,26 @@
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "${GYM_PORT:-8083}:80"
+    environment:
+      APP_NAME: "Gym Management"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:${GYM_PORT:-8083}"
+      APP_KEY: ""
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: sqlite
+      DB_DATABASE: /var/lib/gym/database.sqlite
+      SESSION_DRIVER: file
+      CACHE_STORE: file
+      QUEUE_CONNECTION: sync
+      MAIL_MAILER: log
+      FILESYSTEM_DISK: local
+    volumes:
+      - gym-data:/var/lib/gym
+    restart: unless-stopped
+
+volumes:
+  gym-data:

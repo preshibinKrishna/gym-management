@@ -27,8 +27,15 @@ class MemberController extends Controller
         $periodStart = $period->startOfMonth()->toDateString();
         $periodEnd = $period->endOfMonth()->toDateString();
 
+        $organization = $tenantContext->requireOrganization();
         $members = Member::query()
-            ->whereBelongsTo($tenantContext->requireOrganization())
+            ->whereBelongsTo($organization)
+            ->when(! request()->user()->hasOrganizationWideRole($organization), fn ($query) => $query->whereIn('home_branch_id', request()->user()->branchAssignments()
+                ->where('organization_id', $organization->id)
+                ->where('status', 'active')
+                ->where(fn ($assignment) => $assignment->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
+                ->where(fn ($assignment) => $assignment->whereNull('ends_at')->orWhere('ends_at', '>=', now()))
+                ->select('branch_id')))
             ->with([
                 'homeBranch',
                 'trainer',
@@ -128,7 +135,16 @@ class MemberController extends Controller
         abort_unless($member->organization_id === $organization->id, 404);
         Gate::authorize('view', $member);
 
-        $member->load(['homeBranch', 'trainer', 'memberships.plan', 'guardianRelationships.guardian', 'attendanceVisits.branch']);
+        $member->load([
+            'homeBranch',
+            'trainer',
+            'trainerProfile.homeBranch',
+            'memberships.plan',
+            'guardianRelationships.guardian',
+            'attendanceVisits.branch',
+            'workoutAssignments' => fn ($query) => $query->latest(),
+            'mealPlans' => fn ($query) => $query->latest(),
+        ]);
 
         return view('members.show', ['member' => $member]);
     }

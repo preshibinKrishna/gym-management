@@ -18,10 +18,12 @@ class BatchController extends Controller
         return view('batches.index', [
             'batches' => Batch::query()
                 ->whereBelongsTo($tenantContext->requireOrganization())
+                ->when($tenantContext->branch(), fn ($query, $branch) => $query->whereBelongsTo($branch))
                 ->with(['branch', 'trainer'])
+                ->withCount('enrollments')
                 ->orderBy('starts_at')
                 ->paginate(15),
-            'activeBatchCount' => $tenantContext->requireOrganization()->batches()->where('status', 'active')->count(),
+            'activeBatchCount' => $tenantContext->requireOrganization()->batches()->when($tenantContext->branch(), fn ($query, $branch) => $query->whereBelongsTo($branch))->where('status', 'active')->count(),
         ]);
     }
 

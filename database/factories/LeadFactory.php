@@ -24,7 +24,7 @@ class LeadFactory extends Factory
             'source' => fake()->randomElement(['walk-in', 'referral', 'instagram', 'website']),
             'follow_up_on' => now()->addDays(2)->toDateString(),
             'trial_starts_at' => now()->addDay()->setHour(8),
-            'status' => 'not_contacted',
+            'status' => fake()->randomElement(array_keys(Lead::STATUS_OPTIONS)),
             'notes' => fake()->sentence(),
         ];
     }

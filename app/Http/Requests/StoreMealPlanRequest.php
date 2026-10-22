@@ -17,6 +17,6 @@ class StoreMealPlanRequest extends FormRequest
     {
         $organization = app(TenantContext::class)->requireOrganization();
 
-        return ['member_id' => ['required', 'integer', Rule::exists('members', 'id')->where('organization_id', $organization->id)], 'name' => ['required', 'string', 'max:255'], 'starts_on' => ['required', 'date'], 'ends_on' => ['nullable', 'date', 'after_or_equal:starts_on'], 'meals' => ['required', 'string', 'max:5000'], 'preferences' => ['nullable', 'string', 'max:1000']];
+        return ['member_ids' => ['required', 'array', 'min:1'], 'member_ids.*' => ['required', 'integer', 'distinct', Rule::exists('members', 'id')->where('organization_id', $organization->id)], 'name' => ['required', 'string', 'max:255'], 'starts_on' => ['required', 'date'], 'ends_on' => ['nullable', 'date', 'after_or_equal:starts_on'], 'meals' => ['required', 'string', 'max:5000'], 'preferences' => ['nullable', 'string', 'max:1000']];
     }
 }

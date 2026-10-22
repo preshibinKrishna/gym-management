@@ -26,7 +26,7 @@ class AttendanceController extends Controller
 
         return view('attendance.index', [
             'branch' => $branch,
-            'members' => Member::query()->whereBelongsTo($organization)->orderBy('name')->limit(100)->get(),
+            'members' => Member::query()->whereBelongsTo($organization)->whereBelongsTo($branch, 'homeBranch')->orderBy('name')->limit(100)->get(),
             'visits' => AttendanceVisit::query()
                 ->whereBelongsTo($organization)
                 ->whereBelongsTo($branch)

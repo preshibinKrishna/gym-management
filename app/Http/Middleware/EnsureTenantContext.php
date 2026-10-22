@@ -38,6 +38,7 @@ class EnsureTenantContext
         $organization = Organization::query()->whereKey($organizationId)->first();
 
         abort_unless($organization && $user->hasActiveAffiliation($organization), 403, 'Invalid tenant context.');
+        abort_unless($branchId !== null || $user->hasOrganizationWideRole($organization) || $organization->members()->where('user_id', $user->id)->exists(), 403, 'Branch assignment is required.');
 
         $branch = null;
 
@@ -48,7 +49,7 @@ class EnsureTenantContext
                 ->first();
 
             abort_unless($branch, 403, 'Invalid branch context.');
-            abort_unless($user->hasOrganizationWideRole($organization) || $user->isAssignedToBranch($branch), 403, 'Branch assignment is required.');
+            abort_unless($user->hasOrganizationWideRole($organization) || $user->isAssignedToBranch($branch) || $user->hasMemberHomeBranch($branch), 403, 'Branch assignment is required.');
         }
 
         app(TenantContext::class)->set($organization, $branch);

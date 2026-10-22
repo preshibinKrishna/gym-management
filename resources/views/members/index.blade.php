@@ -26,8 +26,8 @@
             <p class="text-xs text-zinc-500">{{ $members->total() }} total members</p>
         </div>
         <div class="overflow-x-auto">
-            <table class="min-w-[980px] w-full text-left text-sm">
-                <thead><tr><th class="px-5 py-3">Member</th><th class="px-5 py-3">Package</th><th class="px-5 py-3">Monthly fee</th><th class="px-5 py-3">Paid</th><th class="px-5 py-3">Balance</th><th class="px-5 py-3">Payment status</th><th class="px-5 py-3"></th></tr></thead>
+            <table class="min-w-[1160px] w-full text-left text-sm">
+                <thead><tr><th class="px-5 py-3">Member</th><th class="px-5 py-3">Package</th><th class="px-5 py-3">Joined</th><th class="px-5 py-3">Member status</th><th class="px-5 py-3">Monthly fee</th><th class="px-5 py-3">Paid</th><th class="px-5 py-3">Balance</th><th class="px-5 py-3">Payment status</th><th class="px-5 py-3"></th></tr></thead>
                 <tbody class="divide-y divide-zinc-100">
                     @forelse ($members as $member)
                         @php
@@ -39,6 +39,8 @@
                         <tr>
                             <td class="px-5 py-4"><div class="flex items-center gap-3"><span class="grid size-10 shrink-0 place-items-center overflow-hidden rounded-full bg-ink text-xs font-bold text-mint ring-2 ring-emerald-50">@if($member->avatar_path)<img src="{{ asset('storage/'.$member->avatar_path) }}" alt="{{ $member->name }}" class="size-full object-cover">@else{{ str($member->name)->substr(0, 1)->upper() }}@endif</span><div><a href="{{ route('members.show', $member) }}" class="font-semibold text-ink hover:text-emerald-700">{{ $member->name }}</a><p class="mt-0.5 font-mono text-[11px] text-zinc-500">{{ $member->member_code }}</p></div></div></td>
                             <td class="px-5 py-4"><p class="font-medium">{{ $membership?->plan?->name ?? 'No active package' }}</p><p class="mt-1 text-xs text-zinc-500">{{ $member->homeBranch?->name ?? 'No branch' }}</p></td>
+                            <td class="px-5 py-4 text-zinc-600">{{ $member->joined_on?->format('d M Y') ?? 'Not recorded' }}</td>
+                            <td class="px-5 py-4"><span class="status-pill {{ $member->status === 'active' ? 'bg-emerald-100 text-emerald-800' : 'bg-zinc-100 text-zinc-600' }}">{{ ucfirst($member->status) }}</span></td>
                             <td class="px-5 py-4 font-medium">{{ $member->monthlyBilledPaise() ? '₹'.number_format($member->monthlyBilledPaise() / 100, 2) : '—' }}</td>
                             <td class="px-5 py-4 text-emerald-800">{{ $member->monthlyPaidPaise() ? '₹'.number_format($member->monthlyPaidPaise() / 100, 2) : '—' }}</td>
                             <td class="px-5 py-4 {{ $member->monthlyBilledPaise() - $member->monthlyPaidPaise() > 0 ? 'font-semibold text-rose-700' : 'text-zinc-500' }}">{{ $member->monthlyBilledPaise() - $member->monthlyPaidPaise() > 0 ? '₹'.number_format(($member->monthlyBilledPaise() - $member->monthlyPaidPaise()) / 100, 2) : '—' }}</td>
@@ -46,7 +48,7 @@
                             <td class="px-5 py-4 text-right"><a href="{{ route('members.show', $member) }}" class="text-xs font-semibold text-emerald-800 hover:text-emerald-950">View profile →</a></td>
                         </tr>
                     @empty
-                        <tr><td colspan="7" class="px-5 py-14 text-center"><p class="font-semibold text-ink">No members found</p><p class="mt-1 text-sm text-zinc-500">Register a member or choose another billing month.</p></td></tr>
+                        <tr><td colspan="9" class="px-5 py-14 text-center"><p class="font-semibold text-ink">No members found</p><p class="mt-1 text-sm text-zinc-500">Register a member or choose another billing month.</p></td></tr>
                     @endforelse
                 </tbody>
             </table>

@@ -56,5 +56,30 @@
                 </div>
             </div>
         </section>
+
+        @can('assign', $branch)
+            <section class="rounded border border-zinc-200 bg-white p-5">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Staff access</p>
+                    <h2 class="mt-1 text-lg font-semibold">Choose who can access {{ $branch->name }}</h2>
+                    <p class="mt-1 text-sm text-zinc-600">Assigned trainers, gym admins, and other staff can switch to this gym and see its member list.</p>
+                </div>
+                <form method="POST" action="{{ route('branches.assignments.update', $branch) }}" class="mt-5 space-y-4">
+                    @csrf
+                    @method('PUT')
+                    <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach ($staff as $user)
+                            <label class="flex items-center gap-3 rounded border border-zinc-200 p-3 text-sm">
+                                <input type="checkbox" name="user_ids[]" value="{{ $user->id }}" @checked(in_array($user->id, old('user_ids', $assignedStaffIds))) class="rounded border-zinc-300 text-emerald-700">
+                                <span><span class="block font-medium">{{ $user->name }}</span><span class="text-xs text-zinc-500">{{ $user->email }}</span></span>
+                            </label>
+                        @endforeach
+                    </div>
+                    @error('user_ids')<p class="text-sm text-red-700">{{ $message }}</p>@enderror
+                    @error('user_ids.*')<p class="text-sm text-red-700">{{ $message }}</p>@enderror
+                    <button class="rounded bg-emerald-700 px-4 py-2 text-sm font-semibold text-white">Save staff access</button>
+                </form>
+            </section>
+        @endcan
     </div>
 </x-layouts.app>

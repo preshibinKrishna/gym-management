@@ -163,6 +163,15 @@ class DatabaseSeeder extends Seeder
                 platformAdmin: $platformAdmin,
             );
         });
+
+        $this->call([
+            DemoRoleAccountsSeeder::class,
+            DemoBranchSeeder::class,
+            MemberDirectorySeeder::class,
+            DemoSectionSeeder::class,
+            MemberLeadSeeder::class,
+            GymEnquirySeeder::class,
+        ]);
     }
 
     /**

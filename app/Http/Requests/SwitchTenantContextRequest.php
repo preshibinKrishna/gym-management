@@ -22,7 +22,7 @@ class SwitchTenantContextRequest extends FormRequest
         }
 
         if (! $this->filled('branch_id')) {
-            return true;
+            return $user->hasOrganizationWideRole($organization);
         }
 
         $branch = Branch::query()
@@ -30,7 +30,7 @@ class SwitchTenantContextRequest extends FormRequest
             ->whereKey($this->integer('branch_id'))
             ->first();
 
-        return $branch !== null && ($user->hasOrganizationWideRole($organization) || $user->isAssignedToBranch($branch));
+        return $branch !== null && ($user->hasOrganizationWideRole($organization) || $user->isAssignedToBranch($branch) || $user->hasMemberHomeBranch($branch));
     }
 
     /**

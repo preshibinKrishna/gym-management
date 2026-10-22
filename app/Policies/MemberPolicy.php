@@ -13,7 +13,9 @@ class MemberPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('members.view', app(TenantContext::class)->organization());
+        $tenant = app(TenantContext::class);
+
+        return $user->hasPermission('members.view', $tenant->organization(), $tenant->branch());
     }
 
     /**
@@ -29,7 +31,7 @@ class MemberPolicy
 
         return $user->hasPermission('members.view', $organization, $member->homeBranch)
             || $member->user_id === $user->id
-            || $member->assigned_trainer_user_id === $user->id
+            || ($member->assigned_trainer_user_id === $user->id && $user->isAssignedToBranch($member->homeBranch))
             || $member->guardianRelationships()
                 ->where('guardian_user_id', $user->id)
                 ->where('can_view_profile', true)

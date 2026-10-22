@@ -32,6 +32,13 @@ class AuthenticatedSessionController extends Controller
 
         $this->establishInitialContext($request->user());
 
+        $organizationId = $request->session()->get('tenant.organization_id');
+        if ($organizationId !== null
+            && $request->user()->memberProfiles()->where('organization_id', $organizationId)->exists()
+            && ! $request->user()->roleAssignments()->where('organization_id', $organizationId)->exists()) {
+            return redirect()->intended(route('member-portal'));
+        }
+
         return redirect()->intended(route('dashboard'));
     }
 
@@ -64,9 +71,12 @@ class AuthenticatedSessionController extends Controller
                     return;
                 }
 
-                $query->whereHas('assignments', fn ($assignment) => $assignment
-                    ->where('user_id', $user->id)
-                    ->where('status', 'active'));
+                $query->where(function ($branchQuery) use ($user): void {
+                    $branchQuery->whereHas('assignments', fn ($assignment) => $assignment
+                        ->where('user_id', $user->id)
+                        ->where('status', 'active'))
+                        ->orWhereHas('members', fn ($members) => $members->where('user_id', $user->id));
+                });
             })
             ->orderBy('name')
             ->first();

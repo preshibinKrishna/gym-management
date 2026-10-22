@@ -8,15 +8,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-#[Fillable(['organization_id', 'member_id', 'trainer_user_id', 'name', 'starts_on', 'ends_on', 'exercises', 'instructions', 'status', 'version'])]
+#[Fillable(['organization_id', 'member_id', 'trainer_user_id', 'name', 'starts_on', 'ends_on', 'exercises', 'weekly_schedule', 'instructions', 'status', 'version'])]
 class WorkoutAssignment extends Model
 {
+    public const WEEKDAYS = [
+        'monday' => 'Monday',
+        'tuesday' => 'Tuesday',
+        'wednesday' => 'Wednesday',
+        'thursday' => 'Thursday',
+        'friday' => 'Friday',
+        'saturday' => 'Saturday',
+        'sunday' => 'Sunday',
+    ];
+
     /** @use HasFactory<WorkoutAssignmentFactory> */
     use HasFactory;
 
     protected function casts(): array
     {
-        return ['starts_on' => 'date', 'ends_on' => 'date', 'exercises' => 'array'];
+        return ['starts_on' => 'date', 'ends_on' => 'date', 'exercises' => 'array', 'weekly_schedule' => 'array'];
     }
 
     public function member(): BelongsTo

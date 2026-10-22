@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(Trainer::class);
     }
 
+    public function memberProfiles(): HasMany
+    {
+        return $this->hasMany(Member::class);
+    }
+
     public function hasActiveAffiliation(Organization $organization): bool
     {
         return $this->affiliations()
@@ -81,6 +86,15 @@ class User extends Authenticatable
             ->where(function ($query): void {
                 $query->whereNull('ends_at')->orWhere('ends_at', '>=', now());
             })
+            ->exists();
+    }
+
+    public function hasMemberHomeBranch(Branch $branch): bool
+    {
+        return Member::query()
+            ->where('organization_id', $branch->organization_id)
+            ->where('home_branch_id', $branch->id)
+            ->where('user_id', $this->id)
             ->exists();
     }
 
@@ -128,6 +142,7 @@ class User extends Authenticatable
         return $this->roleAssignments()
             ->where('organization_id', $organization->id)
             ->whereNull('branch_id')
+            ->whereHas('role', fn ($query) => $query->where('key', 'organization-owner'))
             ->exists();
     }
 }

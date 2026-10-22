@@ -15,11 +15,18 @@ class TrainerController extends Controller
     public function index(TenantContext $tenantContext): View
     {
         $organization = $tenantContext->requireOrganization();
-        abort_unless(request()->user()->hasPermission('trainers.view', $organization), 403);
+        abort_unless(request()->user()->hasPermission('trainers.view', $organization, $tenantContext->branch()), 403);
 
         $status = request()->validate(['status' => ['nullable', 'in:active,inactive']])['status'] ?? null;
-        $trainers = Trainer::query()
+        $visibleTrainers = Trainer::query()
             ->whereBelongsTo($organization)
+            ->when(! request()->user()->hasOrganizationWideRole($organization), fn ($query) => $query->whereIn('home_branch_id', request()->user()->branchAssignments()
+                ->where('organization_id', $organization->id)
+                ->where('status', 'active')
+                ->where(fn ($assignment) => $assignment->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
+                ->where(fn ($assignment) => $assignment->whereNull('ends_at')->orWhere('ends_at', '>=', now()))
+                ->select('branch_id')));
+        $trainers = (clone $visibleTrainers)
             ->with('homeBranch')
             ->when($status, fn ($query) => $query->where('status', $status))
             ->orderByRaw("CASE WHEN status = 'active' THEN 0 ELSE 1 END")
@@ -30,19 +37,21 @@ class TrainerController extends Controller
         return view('trainers.index', [
             'trainers' => $trainers,
             'status' => $status,
-            'activeCount' => $organization->trainers()->where('status', 'active')->count(),
-            'inactiveCount' => $organization->trainers()->where('status', 'inactive')->count(),
-            'monthlyPayrollPaise' => (int) $organization->trainers()->where('status', 'active')->where('employment_type', 'salary')->sum('salary_paise'),
+            'activeCount' => (clone $visibleTrainers)->where('status', 'active')->count(),
+            'inactiveCount' => (clone $visibleTrainers)->where('status', 'inactive')->count(),
+            'monthlyPayrollPaise' => (int) (clone $visibleTrainers)->where('status', 'active')->where('employment_type', 'salary')->sum('salary_paise'),
         ]);
     }
 
     public function create(TenantContext $tenantContext): View
     {
         $organization = $tenantContext->requireOrganization();
-        abort_unless(request()->user()->hasPermission('trainers.manage', $organization), 403);
+        abort_unless(request()->user()->hasPermission('trainers.manage', $organization, $tenantContext->branch()), 403);
 
         return view('trainers.create', [
-            'branches' => $organization->branches()->orderBy('name')->get(),
+            'branches' => $organization->branches()
+                ->when(! request()->user()->hasOrganizationWideRole($organization), fn ($query) => $query->whereHas('assignments', fn ($assignments) => $assignments->where('user_id', request()->user()->id)->where('status', 'active')))
+                ->orderBy('name')->get(),
             'users' => $organization->affiliations()->where('status', 'active')->with('user')->get()->pluck('user')->filter()->unique('id')->sortBy('name'),
         ]);
     }

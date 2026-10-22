@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\Branch;
-use App\Models\Organization;
 use App\Models\User;
 use App\Support\Tenancy\TenantContext;
 
@@ -14,7 +13,9 @@ class BranchPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasPermission('branches.view', app(TenantContext::class)->organization());
+        $tenant = app(TenantContext::class);
+
+        return $user->hasPermission('branches.view', $tenant->organization(), $tenant->branch());
     }
 
     /**
@@ -73,8 +74,12 @@ class BranchPolicy
         return false;
     }
 
-    public function assign(User $user, Organization $organization): bool
+    public function assign(User $user, Branch $branch): bool
     {
-        return $user->hasPermission('roles.assign', $organization);
+        $organization = app(TenantContext::class)->organization();
+
+        return $organization !== null
+            && $branch->organization_id === $organization->id
+            && $user->hasPermission('roles.assign', $organization, $branch);
     }
 }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable(['organization_id', 'home_branch_id', 'user_id', 'assigned_trainer_user_id', 'member_code', 'name', 'avatar_path', 'date_of_birth', 'gender', 'phone', 'email', 'address', 'emergency_contact_name', 'emergency_contact_phone', 'joined_on', 'status', 'goals', 'consents', 'private_health_notes'])]
 class Member extends Model
@@ -45,6 +46,11 @@ class Member extends Model
         return $this->belongsTo(User::class, 'assigned_trainer_user_id');
     }
 
+    public function trainerProfile(): HasOne
+    {
+        return $this->hasOne(Trainer::class, 'user_id', 'assigned_trainer_user_id');
+    }
+
     public function memberships(): HasMany
     {
         return $this->hasMany(Membership::class);
@@ -53,6 +59,11 @@ class Member extends Model
     public function invoices(): HasMany
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
     }
 
     public function guardianRelationships(): HasMany

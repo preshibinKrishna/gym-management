@@ -58,17 +58,17 @@
     .login-stage-grid { @apply absolute inset-0 opacity-30; background-size: 44px 44px; background-image: linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px); }
     .login-stage-kicker { @apply absolute bottom-4 left-6 z-20 text-[10px] font-bold tracking-[0.18em] text-mint/70; }
     .login-exercise-frame { @apply absolute inset-x-0 bottom-8 z-0 mx-auto h-[350px] w-full max-w-4xl overflow-hidden sm:h-[410px]; }
-    .login-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: login-exercise-film 16s ease-in-out infinite; }
-    .login-exercise-frame img:nth-child(2) { animation-delay: 3.2s; }
-    .login-exercise-frame img:nth-child(3) { animation-delay: 6.4s; }
-    .login-exercise-frame img:nth-child(4) { animation-delay: 9.6s; }
-    .login-exercise-frame img:nth-child(5) { animation-delay: 12.8s; }
+    .login-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: login-exercise-film 8s ease-in-out infinite; }
+    .login-exercise-frame img:nth-child(2) { animation-delay: 1.6s; }
+    .login-exercise-frame img:nth-child(3) { animation-delay: 3.2s; }
+    .login-exercise-frame img:nth-child(4) { animation-delay: 4.8s; }
+    .login-exercise-frame img:nth-child(5) { animation-delay: 6.4s; }
     .login-exercise-labels { @apply absolute bottom-16 right-6 z-20 text-right text-xs font-semibold text-white/80; }
-    .login-exercise-labels span { @apply block; opacity: 0; animation: login-label-film 16s ease-in-out infinite; }
-    .login-exercise-labels span:nth-child(2) { animation-delay: 3.2s; }
-    .login-exercise-labels span:nth-child(3) { animation-delay: 6.4s; }
-    .login-exercise-labels span:nth-child(4) { animation-delay: 9.6s; }
-    .login-exercise-labels span:nth-child(5) { animation-delay: 12.8s; }
+    .login-exercise-labels span { @apply block; opacity: 0; animation: login-label-film 8s ease-in-out infinite; }
+    .login-exercise-labels span:nth-child(2) { animation-delay: 1.6s; }
+    .login-exercise-labels span:nth-child(3) { animation-delay: 3.2s; }
+    .login-exercise-labels span:nth-child(4) { animation-delay: 4.8s; }
+    .login-exercise-labels span:nth-child(5) { animation-delay: 6.4s; }
     .login-hero-footer { @apply absolute inset-x-6 bottom-6 flex items-center gap-4 text-xs font-semibold text-white/45 sm:inset-x-10 sm:bottom-8 sm:gap-6; }
     .login-hero-footer span:not(:last-child)::after { content: ''; @apply ml-4 inline-block size-1 rounded-full bg-mint/60 align-middle sm:ml-6; }
     .metric-card { @apply relative overflow-hidden rounded-2xl border border-line bg-white p-5 shadow-[0_10px_30px_rgba(20,33,30,0.04)]; }
@@ -90,17 +90,17 @@
     .gym-floor { @apply absolute inset-x-8 bottom-5 h-px bg-[#c6d9ce]; }
     .gym-stage-label { @apply absolute bottom-2 left-4 text-[10px] font-bold tracking-[0.16em] text-emerald-800/60; }
     .human-exercise-frame { @apply absolute inset-x-0 bottom-5 mx-auto h-80 w-full max-w-5xl overflow-hidden sm:h-[26rem]; }
-    .human-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: human-exercise-cycle 16s ease-in-out infinite; }
-    .human-exercise-frame img:nth-child(2) { animation-delay: 3.2s; }
-    .human-exercise-frame img:nth-child(3) { animation-delay: 6.4s; }
-    .human-exercise-frame img:nth-child(4) { animation-delay: 9.6s; }
-    .human-exercise-frame img:nth-child(5) { animation-delay: 12.8s; }
+    .human-exercise-frame img { @apply absolute inset-0 size-full object-contain object-bottom; opacity: 0; will-change: opacity, transform; animation: human-exercise-cycle 8s ease-in-out infinite; }
+    .human-exercise-frame img:nth-child(2) { animation-delay: 1.6s; }
+    .human-exercise-frame img:nth-child(3) { animation-delay: 3.2s; }
+    .human-exercise-frame img:nth-child(4) { animation-delay: 4.8s; }
+    .human-exercise-frame img:nth-child(5) { animation-delay: 6.4s; }
     .gym-exercise-caption { @apply absolute bottom-8 right-4 z-10 text-right text-xs font-bold text-emerald-900; }
-    .gym-exercise-caption span { position: absolute; right: 0; width: 10rem; opacity: 0; animation: exercise-caption-cycle 16s ease-in-out infinite; }
-    .gym-exercise-caption span:nth-child(2) { animation-delay: 3.2s; }
-    .gym-exercise-caption span:nth-child(3) { animation-delay: 6.4s; }
-    .gym-exercise-caption span:nth-child(4) { animation-delay: 9.6s; }
-    .gym-exercise-caption span:nth-child(5) { animation-delay: 12.8s; }
+    .gym-exercise-caption span { position: absolute; right: 0; width: 10rem; opacity: 0; animation: exercise-caption-cycle 8s ease-in-out infinite; }
+    .gym-exercise-caption span:nth-child(2) { animation-delay: 1.6s; }
+    .gym-exercise-caption span:nth-child(3) { animation-delay: 3.2s; }
+    .gym-exercise-caption span:nth-child(4) { animation-delay: 4.8s; }
+    .gym-exercise-caption span:nth-child(5) { animation-delay: 6.4s; }
 }
 
 @keyframes gym-lift {
@@ -184,6 +184,7 @@
 }
 
 @layer utilities {
+    .app-main, .app-topbar > *, .app-shell main > * { min-width: 0; }
     main h1 { letter-spacing: 0; line-height: 1.15; }
     main h1::before { content: ''; display: inline-block; width: 0.35rem; height: 1.1em; margin-right: 0.65rem; border-radius: 999px; background: var(--color-mint); vertical-align: -0.12em; }
     main > div > div:first-child { border-bottom: 1px solid rgba(220, 228, 223, 0.75); padding-bottom: 1.25rem; }
@@ -216,4 +217,20 @@
     main nav[role='navigation'] a { border: 1px solid var(--color-line); background: white; color: var(--color-ink); transition: border-color 150ms ease, background-color 150ms ease; }
     main nav[role='navigation'] a:hover { border-color: #34a873; background: #ecfdf5; }
     main nav[role='navigation'] span[aria-current='page'] > span { border-radius: 0.65rem; background: var(--color-ink); color: white; }
+}
+
+@media (max-width: 359px) {
+    .app-topbar > div:first-child > div { display: none; }
+}
+
+@media (max-width: 639px) {
+    .app-topbar { gap: 0.5rem; padding-inline: 0.75rem; }
+    .app-topbar > div:last-child { gap: 0.5rem; }
+    .app-topbar form button { padding-inline: 0.65rem; }
+    .app-sidebar { width: min(18rem, calc(100vw - 2rem)); }
+    .login-hero { min-height: 620px; }
+    .login-hero-copy { margin-top: 3rem; }
+    .login-visual-stage { height: 300px; }
+    .login-exercise-frame { height: 290px; }
+    .gym-motion-legend { flex-wrap: wrap; }
 }

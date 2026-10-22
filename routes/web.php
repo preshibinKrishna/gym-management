@@ -14,6 +14,7 @@ use App\Http\Controllers\MemberPortalController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\OperationsController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\PlatformGymEnquiryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TenantContextController;
@@ -21,7 +22,7 @@ use App\Http\Controllers\TrainerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('dashboard');
+    return auth()->check() ? redirect()->route('dashboard') : view('welcome');
 })->name('home');
 
 Route::middleware('guest')->group(function (): void {
@@ -35,6 +36,7 @@ Route::middleware(['auth', 'tenant'])->group(function (): void {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('/tenant-context', [TenantContextController::class, 'update'])->name('tenant-context.update');
     Route::resource('branches', BranchController::class)->only(['index', 'create', 'store', 'show']);
+    Route::put('/branches/{branch}/assignments', [BranchController::class, 'updateAssignments'])->name('branches.assignments.update');
     Route::resource('leads', LeadController::class)->only(['index', 'create', 'store', 'show']);
     Route::patch('/leads/{lead}/status', [LeadController::class, 'updateStatus'])->name('leads.status.update');
     Route::resource('members', MemberController::class)->only(['index', 'create', 'store', 'show']);
@@ -68,5 +70,8 @@ Route::middleware(['auth', 'tenant'])->group(function (): void {
     Route::post('/integrations/notifications', [IntegrationController::class, 'notification'])->name('integrations.notifications');
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 });
+
+Route::middleware('auth')->get('/platform/gym-enquiries', [PlatformGymEnquiryController::class, 'index'])
+    ->name('platform.gym-enquiries.index');
 
 Route::post('/integrations/razorpay/webhook', [IntegrationController::class, 'paymentWebhook'])->name('integrations.razorpay.webhook');

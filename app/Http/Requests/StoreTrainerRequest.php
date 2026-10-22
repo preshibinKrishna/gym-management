@@ -12,7 +12,7 @@ class StoreTrainerRequest extends FormRequest
     {
         $organization = app(TenantContext::class)->requireOrganization();
 
-        return $this->user()?->hasPermission('trainers.manage', $organization) ?? false;
+        return $this->user()?->hasPermission('trainers.manage', $organization, app(TenantContext::class)->branch()) ?? false;
     }
 
     public function rules(): array
